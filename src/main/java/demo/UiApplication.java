@@ -10,24 +10,49 @@ import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-@CrossOrigin(maxAge = 4800) 
+@CrossOrigin(maxAge = 4800, allowCredentials = "true") 
 @RestController
+@RequestMapping("/api")
 public class UiApplication {
 
+	private static Logger logger = LoggerFactory.getLogger(UiApplication.class);
+
 	List<Customer> custList = new ArrayList<Customer>();
-	List<Order> orderList = new ArrayList<Order>();
+	List<demo.Order> orderList = new ArrayList<demo.Order>();
+
+	@Configuration
+	@Order(SecurityProperties.IGNORED_ORDER)
+	protected static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			http
+			.httpBasic()
+			.and()
+			.authorizeRequests()
+			.antMatchers("/index.html", "/", "/home", "/login").permitAll()
+			.anyRequest().authenticated();
+		}
+	}
 	
 	@PostConstruct
 	public void init(){
-		
+		logger.info("init");
 		custList.add(new Customer("1", "Ann"));
 		custList.add(new Customer("2", "Anita"));
 		custList.add(new Customer("3", "Bowie"));
@@ -48,58 +73,61 @@ public class UiApplication {
 		custList.add(new Customer("18", "Ivan"));
 		custList.add(new Customer("19", "Jackson"));
 		custList.add(new Customer("20", "Johnny"));
-		
+
 		for(int i=1;i<=20;i++){
-			orderList.add(new Order(Integer.toString(i),"watch"+i, new BigDecimal(i*10000)));
+			orderList.add(new demo.Order(Integer.toString(i),"watch"+i, new BigDecimal(i*10000)));
 		}
-			
+
 	}
-	
-	
-	@RequestMapping("/resource")
+
+
+	@RequestMapping(value="/resource",method = RequestMethod.GET)
 	public Map<String,Object> home() {
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("id", UUID.randomUUID().toString());
 		model.put("content", "Hello World");
 		return model;
 	}
-	
-	@RequestMapping("/login/{username}/{pwd}")
+
+	@RequestMapping(value="/login/{username}/{pwd}",method = {RequestMethod.OPTIONS,RequestMethod.GET})
 	public User login(@PathVariable("username")String username, @PathVariable("pwd")String pwd) {
+
+		logger.info("login");
+
 		if(username.equals("travis")&&pwd.equals("1234")){
 			return new User("1", "travis", "1234");
 		}
 		return null;
 	}
 
-	@RequestMapping("/customerSearch/{custName}")
+	@RequestMapping(value="/customerSearch/{custName}", method = RequestMethod.GET)
 	public List<Customer> customerSearch(@PathVariable("custName")String custName) {
-		
+
 		List<Customer> result = new ArrayList<Customer>();
-		
+
 		custList.forEach(cust->{
 			if(cust.getName().toUpperCase().startsWith(custName.toUpperCase())){
 				result.add(cust);
 			}
 		});
-		
+
 		return result;
 	}
-	
-	@RequestMapping("/getOrder/{id}")
-	public List<Order> getOrder(@PathVariable("id")String id) {
-		
-		List<Order> result = new ArrayList<Order>();
-		
+
+	@RequestMapping(value="/getOrder/{id}", method = RequestMethod.GET)
+	public List<demo.Order> getOrder(@PathVariable("id")String id) {
+
+		List<demo.Order> result = new ArrayList<demo.Order>();
+
 		Random rand = new Random(20);
-		
+
 		for(int i=0;i<3;i++){
 			result.add(orderList.get(rand.nextInt()));
 		}
-		
+
 		return result;
 	}
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(UiApplication.class, args);
 	}
