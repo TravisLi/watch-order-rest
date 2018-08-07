@@ -14,11 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-@CrossOrigin(maxAge = 4800, allowCredentials = "true") 
+@CrossOrigin(maxAge = 4800, allowCredentials = "false") 
 @RestController
 @RequestMapping("/api")
 public class UiApplication {
@@ -35,8 +30,9 @@ public class UiApplication {
 
 	List<Customer> custList = new ArrayList<Customer>();
 	List<demo.Order> orderList = new ArrayList<demo.Order>();
+	List<Product> productList = new ArrayList<Product>();
 
-	@Configuration
+	/*@Configuration
 	@Order(SecurityProperties.IGNORED_ORDER)
 	protected static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		@Override
@@ -48,7 +44,7 @@ public class UiApplication {
 			.antMatchers("/index.html", "/", "/home", "/login").permitAll()
 			.anyRequest().authenticated();
 		}
-	}
+	}*/
 	
 	@PostConstruct
 	public void init(){
@@ -75,7 +71,19 @@ public class UiApplication {
 		custList.add(new Customer("20", "Johnny"));
 
 		for(int i=1;i<=20;i++){
-			orderList.add(new demo.Order(Integer.toString(i),"watch"+i, new BigDecimal(i*10000)));
+			productList.add(new demo.Product(Integer.toString(i),"watch"+i, new BigDecimal(i*10000)));
+		}
+		
+		for(int i=1;i<=20;i++){
+			
+			Order order = new Order();
+			order.setId(Integer.toString(i));
+			
+			Random rand = new Random(20);
+			
+			for(int j=0;j<3;j++){
+				order.getProducts().add(productList.get(rand.nextInt()));
+			}
 		}
 
 	}
@@ -107,6 +115,7 @@ public class UiApplication {
 
 		custList.forEach(cust->{
 			if(cust.getName().toUpperCase().startsWith(custName.toUpperCase())){
+				logger.info("Cust Name = " + cust.getName());
 				result.add(cust);
 			}
 		});
