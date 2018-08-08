@@ -79,10 +79,11 @@ public class UiApplication {
 			Order order = new Order();
 			order.setId(Integer.toString(i));
 			
-			Random rand = new Random(20);
+			Random rand = new Random();
+
 			
 			for(int j=0;j<3;j++){
-				order.getProducts().add(productList.get(rand.nextInt()));
+				order.getProducts().add(productList.get(rand.nextInt(20)));
 			}
 		}
 
@@ -128,10 +129,10 @@ public class UiApplication {
 
 		List<demo.Order> result = new ArrayList<demo.Order>();
 
-		Random rand = new Random(20);
+		Random rand = new Random();
 
 		for(int i=0;i<3;i++){
-			result.add(orderList.get(rand.nextInt()));
+			result.add(orderList.get(rand.nextInt(20)));
 		}
 
 		return result;
