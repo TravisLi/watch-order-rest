@@ -2,6 +2,7 @@ package demo;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,11 +81,37 @@ public class UiApplication {
 			order.setId(Integer.toString(i));
 			
 			Random rand = new Random();
-
 			
-			for(int j=0;j<3;j++){
-				order.getProducts().add(productList.get(rand.nextInt(20)));
+			int day = rand.nextInt(29)+1;
+			
+			int month = rand.nextInt(12)+1;
+			
+			Calendar cal = Calendar.getInstance();
+			
+			cal.set(Calendar.DAY_OF_MONTH, day);
+			cal.set(Calendar.MONTH, month);
+			
+			order.setDate(cal.getTime());
+			
+			Integer discount = (rand.nextInt(5) + 1) * 10;
+			order.setDiscount(discount);
+			
+			int productNo = rand.nextInt(3)+1;
+			
+			BigDecimal total = new BigDecimal(0);
+			
+			for(int j=0;j<productNo;j++){
+				Product product = productList.get(rand.nextInt(20));
+				total = total.add(product.getPrice());
+				order.getProducts().add(product);
 			}
+			
+			total = total.multiply(new BigDecimal(discount));
+			
+			logger.info("total = " + total);
+			order.setTotal(total);
+			
+			orderList.add(order);
 		}
 
 	}
@@ -124,9 +151,11 @@ public class UiApplication {
 		return result;
 	}
 
-	@RequestMapping(value="/getOrder/{id}", method = RequestMethod.GET)
+	@RequestMapping(value="/order/{id}", method = RequestMethod.GET)
 	public List<demo.Order> getOrder(@PathVariable("id")String id) {
 
+		logger.info("GetOrder with id=" + id);
+		
 		List<demo.Order> result = new ArrayList<demo.Order>();
 
 		Random rand = new Random();
