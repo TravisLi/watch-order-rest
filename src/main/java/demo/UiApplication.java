@@ -50,29 +50,29 @@ public class UiApplication {
 	@PostConstruct
 	public void init(){
 		logger.info("init");
-		custList.add(new Customer("1", "Ann"));
-		custList.add(new Customer("2", "Anita"));
-		custList.add(new Customer("3", "Bowie"));
-		custList.add(new Customer("4", "Bonnie"));
-		custList.add(new Customer("5", "Cat"));
-		custList.add(new Customer("6", "Cathy"));
-		custList.add(new Customer("7", "Donnie"));
-		custList.add(new Customer("8", "Dicken"));
-		custList.add(new Customer("9", "Elaine"));
-		custList.add(new Customer("10", "Ethen"));
-		custList.add(new Customer("11", "Fanny"));
-		custList.add(new Customer("12", "Francise"));
-		custList.add(new Customer("13", "Gloria"));
-		custList.add(new Customer("14", "Gary"));
-		custList.add(new Customer("15", "Henry"));
-		custList.add(new Customer("16", "Haliary"));
-		custList.add(new Customer("17", "Ian"));
-		custList.add(new Customer("18", "Ivan"));
-		custList.add(new Customer("19", "Jackson"));
-		custList.add(new Customer("20", "Johnny"));
+		custList.add(new Customer("1", "李小明"));
+		custList.add(new Customer("2", "李大明"));
+		custList.add(new Customer("3", "李小令"));
+		custList.add(new Customer("4", "李大力"));
+		custList.add(new Customer("5", "陳小明"));
+		custList.add(new Customer("6", "陳大明"));
+		custList.add(new Customer("7", "陳小令"));
+		custList.add(new Customer("8", "陳大力"));
+		custList.add(new Customer("9", "王小明"));
+		custList.add(new Customer("10", "王大明"));
+		custList.add(new Customer("11", "王小令"));
+		custList.add(new Customer("12", "王大力"));
+		custList.add(new Customer("13", "何小明"));
+		custList.add(new Customer("14", "何大明"));
+		custList.add(new Customer("15", "何小令"));
+		custList.add(new Customer("16", "何大力"));
+		custList.add(new Customer("17", "張小明"));
+		custList.add(new Customer("18", "張大明"));
+		custList.add(new Customer("19", "張小令"));
+		custList.add(new Customer("20", "張大力"));
 
 		for(int i=1;i<=20;i++){
-			productList.add(new demo.Product(Integer.toString(i),"watch"+i, new BigDecimal(i*10000)));
+			productList.add(new demo.Product(Integer.toString(i),"勞力士"+i, new BigDecimal(i*10000)));
 		}
 		
 		for(int i=1;i<=20;i++){
@@ -130,8 +130,8 @@ public class UiApplication {
 
 		logger.info("login");
 
-		if(username.equals("travis")&&pwd.equals("1234")){
-			return new User("1", "travis", "1234");
+		if(username.equals("test")&&pwd.equals("1234")){
+			return new User("1", "test", "1234");
 		}
 		return null;
 	}
