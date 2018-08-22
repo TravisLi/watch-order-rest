@@ -11,6 +11,6 @@ RUN apk --update add tzdata && \
     apk del tzdata && \
     rm -rf /var/cache/apk/*
 
-ADD target/watch-order-rest*.jar /app.jar
+ADD target/watch-order-rest-0.0.1.jar /app.jar
 RUN sh -c 'touch /app.jar'
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom -Xmx1024m -XX:+UseConcMarkSweepGC","-jar","/app.jar"]
