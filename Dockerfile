@@ -6,4 +6,13 @@ COPY pom.xml .
 
 RUN mvn package
 
-ENTRYPOINT ["java","-jar","/usr/src/app/target/watch-order-rest-0.0.1.jar"]
+FROM openjdk:8-jre-alpine
+
+WORKDIR /app
+
+COPY --from=1 /app/target/watch-order-rest-0.0.1.jar /app/watch-order-rest.jar
+
+CMD ["java -jar watch-order-rest.jar"] 
+
+
+
