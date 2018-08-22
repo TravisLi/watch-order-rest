@@ -3,12 +3,12 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.test</groupId>
-    <artifactId>basic</artifactId>
+    <groupId>org.coolki</groupId>
+    <artifactId>watch-order-rest</artifactId>
     <version>0.0.1</version>
     <packaging>jar</packaging>
 
-    <name>basic</name>
+    <name>watch-order-rest</name>
     <description>Demo project for Spring Boot</description>
 
     <dependencies>
@@ -48,14 +48,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <version>1.6</version>
-                <configuration>
-                    <nodeVersion>v8.8.1</nodeVersion>
-                </configuration>
             </plugin>
         </plugins>
     </build>
