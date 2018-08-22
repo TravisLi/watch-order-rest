@@ -1,4 +1,8 @@
-FROM maven:jdk-8-alpine
+FROM maven:alpine
+
+WORKDIR /usr/src/app
+
+COPY pom.xml .
 
 RUN mvn package
 
