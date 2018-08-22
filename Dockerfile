@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-alpine
+FROM maven:jdk-8-alpine
 
 RUN mvn package
 
