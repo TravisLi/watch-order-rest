@@ -1,5 +1,7 @@
 FROM openjdk:8-jre-alpine
 
+RUN mvn package
+
 RUN apk --update add tzdata && \
     cp /usr/share/zoneinfo/Asia/Hong_Kong /etc/localtime && \
     apk del tzdata && \
